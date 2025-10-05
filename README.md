@@ -1,61 +1,92 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Tutorial AI Guru Matematika
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Deskripsi singkat: proyek Laravel sederhana yang memperlihatkan integrasi AI untuk membantu proses belajar matematika — contoh: menjawab soal, menjelaskan langkah penyelesaian, dan menampilkan hasil di antarmuka web.
 
-## About Laravel
+## Fitur
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- Halaman input soal matematika (`/`) dan halaman hasil (`/result`).
+- Integrasi layanan AI (menggunakan API OpenAI) untuk menghasilkan penjelasan langkah demi langkah.
+- Struktur Laravel standar (models, controllers, views).
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Persyaratan
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP 8.1+ (sesuaikan dengan versi Laravel yang digunakan)
+- Composer
+- Node.js & npm (opsional, hanya bila ingin membangun asset frontend)
 
-## Learning Laravel
+## Instalasi
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+1. Clone repository:
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+   git clone https://github.com/fathurDotCom/tutorial-ai-guru-matematika.git
+   cd tutorial-ai-guru-matematika
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+2. Instal dependensi PHP:
 
-## Laravel Sponsors
+   composer install
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+3. Salin file environment dan generate app key:
 
-### Premium Partners
+   cp .env.example .env
+   php artisan key:generate
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+4. Instal dependensi frontend (opsional jika ingin membangun asset):
 
-## Contributing
+   npm install
+   npm run build
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Menambahkan OPENAI_API_KEY ke .env
 
-## Code of Conduct
+Proyek ini menggunakan OpenAI (atau layanan API yang kompatibel) untuk menjawab dan menjelaskan soal matematika. Untuk menambahkan kunci API, ikuti langkah berikut:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+1. Dapatkan API key dari OpenAI di https://platform.openai.com/account/api-keys.
 
-## Security Vulnerabilities
+2. Buka file `.env` di root proyek (jika belum ada, setelah langkah install di atas Anda harus sudah menyalin `.env.example` ke `.env`).
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+3. Tambahkan baris berikut ke `.env`:
 
-## License
+   OPENAI_API_KEY=sk-<kunci-anda>
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+   Contoh:
+
+   OPENAI_API_KEY=sk-abcdefgh1234567890
+
+4. (Opsional) Jika Anda meng-cache konfigurasi, jalankan perintah berikut agar Laravel memuat ulang konfigurasi:
+
+   php artisan config:cache
+
+5. Pastikan kode mengambil nilai env ini. Contoh penggunaan di Laravel (biasanya ada di service atau controller):
+
+   // ...existing code...
+   $apiKey = env('OPENAI_API_KEY');
+   // Buat client OpenAI dengan $apiKey atau gunakan package pihak ketiga
+
+Catatan: jangan commit kunci API ke repository publik. Pastikan `.env` ada di `.gitignore` (Laravel default sudah mengabaikan `.env`).
+
+## Menjalankan aplikasi (development)
+
+1. Jalankan server lokal Laravel:
+
+   php artisan serve
+
+2. Buka browser ke http://127.0.0.1:8000 untuk mencoba fitur AI matematika.
+
+## Struktur penting
+
+- `app/Http/Controllers` — controller untuk menerima input soal dan memanggil service AI.
+- `resources/views/math.blade.php` — form input soal.
+- `resources/views/math_result.blade.php` — halaman hasil dan penjelasan.
+- `routes/web.php` — route untuk halaman dan aksi submit.
+
+## Catatan keamanan
+
+- Jangan commit kunci API ke repository publik.
+- Berikan batasan penggunaan (rate limit) dan validasi input sebelum meneruskan ke API eksternal.
+
+## Kontribusi
+
+Silakan buat pull request atau issue jika ingin menambah fitur, memperbaiki bug, atau meningkatkan dokumentasi.
+
+## Lisensi
+
+Proyek ini mengikuti lisensi MIT (lihat file `LICENSE` jika ada).
